@@ -1,0 +1,60 @@
+import { Page,Locator } from '@playwright/test';
+
+export class UserManagementPage {
+  private readonly page: Page;
+
+  constructor(page: Page) {
+    this.page = page;
+  }
+
+  async clickUserManagement(): Promise<void> {
+    await this.page.locator("//div[@role='button' and .//p[normalize-space()='User Management']]").click();
+}
+
+  async navigateToUserPage(): Promise<void> {
+    await this.page.getByRole('button', { name: 'Users' }).click();
+
+  }
+
+  async clickAddNewUser(): Promise<void> {
+    await this.page.getByRole('button', { name: 'Add New' }).click();
+
+  }
+
+  async enterLoginID(employeeId: string): Promise<void> {
+    await this.page.locator('#root_employeeId').fill(employeeId);
+  }
+
+  async enterValidateId(): Promise<void> {
+    await this.page.getByRole('button', { name: 'Validate' }).click();
+  }
+
+  async enterUserRoleId(): Promise<void> {
+    await this.page.locator('#root_userRoleId').click();
+    await this.page.getByRole('option', { name: 'Administrative Officer' }).click();
+
+  }
+
+
+  async enterSubmitButton(): Promise<void> {
+    await this.page.getByRole('button', { name: 'Submit' }).click();
+
+  }
+
+  async EnterListNumber(outlined: string): Promise<void> {
+    await this.page.locator('#outlined-basic').fill(outlined);
+  }
+  
+
+  // async enterActive(): Promise<void> {
+  //   await this.page
+  //     .locator("(//div[.//span[normalize-space()='Active']])[9]")
+  //     .click();
+  // }
+
+  async isUserManagementPageLoad(): Promise<boolean> {
+    return await this.page
+      .locator("//nav[@aria-label='breadcrumb']//p[normalize-space()='User Management']")
+      .isVisible();
+  }
+}
