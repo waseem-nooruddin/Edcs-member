@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { LoginPage } from "../pages/login.page";
-import { credentials } from "./credentials/credentials";
+import { credentials } from "./resources/credentials";
 
 test.describe("Login Tests", () => {
   let loginPage: LoginPage;
@@ -10,7 +10,7 @@ test.describe("Login Tests", () => {
     await loginPage.navigateToLoginPage();
   });
 
-  test("valid login", { tag: ["@smoke", "@positive"] }, async ({ page }) => {
+  test("valid login", { tag: ["@smoke", "@TC_33", "@positive"] }, async ({ page }) => {
     await loginPage.login(credentials.username, credentials.password);
   });
 });

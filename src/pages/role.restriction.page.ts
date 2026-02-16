@@ -1,19 +1,15 @@
 import { Page, Locator } from "@playwright/test";
 
 export class RoleRestrictionPage {
-  private readonly page: Page;
-
-  constructor(page: Page) {
-    this.page = page;
-  }
+  constructor(private readonly page: Page) {}
 
   async clickRoleRestriction(): Promise<void> {
     await this.page.getByRole("button", { name: "Role Restrictions" }).click();
   }
 
-  async searchRoleRestriction(listNumber: string): Promise<void> {
+  async selectUserRole(roleName: string): Promise<void> {
     await this.page.locator("#root_userRoleId").click();
-    await this.page.getByRole("option", { name: "EDCS Admin Role" }).click();
+    await this.page.getByRole("option", { name: roleName }).click();
   }
   async checkboxSelection(): Promise<void> {
     const checkbox = this.page.getByRole("checkbox");

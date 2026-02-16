@@ -1,11 +1,7 @@
 import { Page, Locator } from "@playwright/test";
 
 export class MenuActionListPage {
-  private readonly page: Page;
-
-  constructor(page: Page) {
-    this.page = page;
-  }
+  constructor(private readonly page: Page) {}
 
   async clickMenuActionList(): Promise<void> {
     await this.page.getByRole("button", { name: "Menu Action List" }).click();
@@ -13,6 +9,6 @@ export class MenuActionListPage {
 
   async searchMenuActionList(listNumber: string): Promise<void> {
     await this.page.locator("#outlined-basic").fill(listNumber);
-    await this.page.fill("#outlined-basic", "Menu 1");
+    await this.page.fill("#outlined-basic", listNumber);
   }
 }

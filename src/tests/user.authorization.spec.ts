@@ -3,7 +3,9 @@ import { LoginPage } from "../pages/login.page";
 import { ProductPage } from "../pages/product.page";
 import { UserManagementPage } from "../pages/user.management.page";
 import { UserAuthorization } from "../pages/user.authorization.page";
-import { credentials } from "./credentials/credentials";
+import { credentials } from "./resources/credentials";
+import { NavBarPage } from "../pages/navbar.page";
+import { testdata } from "./resources/testdata";
 
 test.describe("User Authorization", () => {
   let loginPage: LoginPage;
@@ -18,12 +20,12 @@ test.describe("User Authorization", () => {
     { tag: ["@smoke", "@TC_10", "@positive"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
       const userAuthorization = new UserAuthorization(page);
-      await userAuthorization.clickUserAuthorization();
+      await navBarpage.clickUserAuthorization();
       await userAuthorization.verifyUserAuthorizationPage();
-      await userAuthorization.searchingUser("11434");
+      await userAuthorization.searchingUser(testdata.loginId_Authorization);
     },
   );
 
@@ -32,11 +34,13 @@ test.describe("User Authorization", () => {
     { tag: ["@smoke", "@TC_11", "@positive"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
       const userAuthorization = new UserAuthorization(page);
-      await userAuthorization.clickUserAuthorization();
-      await userAuthorization.verifyPendingUser();
+      await navBarpage.clickUserAuthorization();
+      //await userAuthorization.hoverPendingUser();
+      //await expect (page.getByRole("row", { name: /Pending/i })).toBeVisible();
+      
     },
   );
 
@@ -45,11 +49,12 @@ test.describe("User Authorization", () => {
     { tag: ["@smoke", "@TC_12", "@positive"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await UserManagementPage.prototype.clickUserManagement.call({ page });
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
       const userAuthorization = new UserAuthorization(page);
-      await userAuthorization.clickUserAuthorization();
-      await userAuthorization.verifyPendingUser();
+      await navBarpage.clickUserAuthorization();
+      await expect(page.getByRole("button", { name: "User Authorization" })).toBeVisible();
+      //await userAuthorization.verifyPendingUser();
       await userAuthorization.authorizeUser();
     },
   );

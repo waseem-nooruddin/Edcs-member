@@ -3,9 +3,11 @@ import { LoginPage } from "../pages/login.page";
 import { ProductPage } from "../pages/product.page";
 import { UserManagementPage } from "../pages/user.management.page";
 import { AssignMultipleBranches } from "../pages/assign.multiple.branches.page";
-import { credentials } from "./credentials/credentials";
+import { credentials } from "./resources/credentials";
+import { NavBarPage } from "../pages/navbar.page";
+import { testdata } from "./resources/testdata";
 
-test.describe("Menu Action List Page", () => {
+test.describe("assign multiple branches", () => {
   let loginPage: LoginPage;
 
   test.beforeEach(async ({ page }) => {
@@ -17,40 +19,65 @@ test.describe("Menu Action List Page", () => {
     { tag: ["@smoke", "@TC_18", "@positive"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
-      const assignmultiplebranches = new AssignMultipleBranches(page);
-      await assignmultiplebranches.navigateToAssignMultipleBranches();
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
+      await navBarpage.navigateToAssignMultipleBranches();
+      //expect(page.getByRole("heading", { name: "Assign Multiple Branches" })).toBeVisible();
     },
   );
 
-    test(
+  test(
     "Verify that can add a new branch",
     { tag: ["@smoke", "@TC_19", "@positive"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
       const assignmultiplebranches = new AssignMultipleBranches(page);
-      await assignmultiplebranches.navigateToAssignMultipleBranches();
-      await assignmultiplebranches.fillLoginId("Waseem Automation Test User");
+      await navBarpage.navigateToAssignMultipleBranches();
+      await assignmultiplebranches.selectUserId();
+      //await assignmultiplebranches.waitUntillUserId();
+      await assignmultiplebranches.selectUser(
+        "166513rn - Testing Head Office System User",
+      );
     },
   );
 
-    test(
+  test(
     "Verify that can View all assigned divisions for a user",
     { tag: ["@smoke", "@TC_20", "@positive"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
       const assignmultiplebranches = new AssignMultipleBranches(page);
-      await assignmultiplebranches.navigateToAssignMultipleBranches();
-      await assignmultiplebranches.fillLoginId("Waseem Automation Test User");
+      await navBarpage.navigateToAssignMultipleBranches();
+      await assignmultiplebranches.selectUserId();
+      //await assignmultiplebranches.waitUntillUserId();
+      await assignmultiplebranches.selectUser(
+        "166513rn - Testing Head Office System User",
+      );
       await assignmultiplebranches.addNewButton();
-      await assignmultiplebranches.selectBrachDeptId();
-      await assignmultiplebranches.slectBranch("999-HO - 03");
+      await assignmultiplebranches.selectBranchDeptId();
+      await assignmultiplebranches.slectBranch(testdata.slectBranch);
+      await assignmultiplebranches.clickSaveButton();
     },
-  );  
+  );
 
+  test(
+    "Verify that can delete assigned branches for a user",
+    { tag: ["@smoke", "@negative"] },
+    async ({ page }) => {
+      await loginPage.login(credentials.username, credentials.password);
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
+      const assignmultiplebranches = new AssignMultipleBranches(page);
+      await navBarpage.navigateToAssignMultipleBranches();
+      await assignmultiplebranches.selectUserId();
+      await assignmultiplebranches.selectUser(
+        "166513rn - Testing Head Office System User",
+      );
+      await assignmultiplebranches.deleteData();
+    },
+  );
 });

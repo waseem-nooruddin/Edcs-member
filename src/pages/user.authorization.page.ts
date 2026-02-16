@@ -1,11 +1,7 @@
 import { Page, Locator } from "@playwright/test";
 
 export class UserAuthorization {
-  private readonly page: Page;
-
-  constructor(page: Page) {
-    this.page = page;
-  }
+  constructor(private readonly page: Page) {}
 
   async clickUserAuthorization(): Promise<void> {
     await this.page.getByRole("button", { name: "User Authorization" }).click();
@@ -21,15 +17,15 @@ export class UserAuthorization {
       .isVisible();
   }
 
-  async verifyPendingUser(): Promise<boolean> { 
-    return await this.page
-      .getByRole("row", { name: /Pending/i })
-      .isVisible();
+  // async hoverPendingUser(): Promise<void> {
+  //   await this.page.getByRole("row", { name: /Pending/i }).hover();
+  // }
+
+  async verifyPendingUser(): Promise<boolean> {
+    return await this.page.getByRole("row", { name: /Pending/i }).isVisible();
   }
 
   async authorizeUser(): Promise<void> {
-    await this.page.getByRole("button", { name: "Authorize" }).click();
+    await this.page.getByTitle("Authorize").first().click();
   }
-
-
 }

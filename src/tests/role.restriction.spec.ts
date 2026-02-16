@@ -3,7 +3,9 @@ import { LoginPage } from "../pages/login.page";
 import { ProductPage } from "../pages/product.page";
 import { UserManagementPage } from "../pages/user.management.page";
 import { RoleRestrictionPage } from "../pages/role.restriction.page";
-import { credentials } from "./credentials/credentials";
+import { credentials } from "./resources/credentials";
+import { NavBarPage } from "../pages/navbar.page";
+import { testdata } from "./resources/testdata";
 
 test.describe("Menu Action List Page", () => {
   let loginPage: LoginPage;
@@ -18,10 +20,9 @@ test.describe("Menu Action List Page", () => {
     { tag: ["@smoke", "@TC_25", "@positive1"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
-      const roleRestrictionPage = new RoleRestrictionPage(page);
-      await roleRestrictionPage.clickRoleRestriction();
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
+      await navBarpage.clickRoleRestriction();
     },
   );
 
@@ -30,11 +31,11 @@ test.describe("Menu Action List Page", () => {
     { tag: ["@smoke", "@TC_26", "@positive1"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
       const roleRestrictionPage = new RoleRestrictionPage(page);
-      await roleRestrictionPage.clickRoleRestriction();
-      await roleRestrictionPage.searchRoleRestriction("284");
+      await navBarpage.clickRoleRestriction();
+      await roleRestrictionPage.selectUserRole(testdata.selectUserRole);
       await expect(
         page.getByRole("heading", { name: "Role Restriction" }),
       ).toBeVisible();
@@ -46,11 +47,11 @@ test.describe("Menu Action List Page", () => {
     { tag: ["@smoke", "@TC_27", "@positive1"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
       const roleRestrictionPage = new RoleRestrictionPage(page);
-      await roleRestrictionPage.clickRoleRestriction();
-      await roleRestrictionPage.searchRoleRestriction("284");
+      await navBarpage.clickRoleRestriction();
+      await roleRestrictionPage.selectUserRole(testdata.selectUserRole);
       await expect(
         page.getByRole("heading", { name: "Role Restriction" }),
       ).toBeVisible();
@@ -64,11 +65,11 @@ test.describe("Menu Action List Page", () => {
     { tag: ["@smoke", "@TC_28", "@positive"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
       const roleRestrictionPage = new RoleRestrictionPage(page);
-      await roleRestrictionPage.clickRoleRestriction();
-      await roleRestrictionPage.searchRoleRestriction("284");
+      await navBarpage.clickRoleRestriction();
+      await roleRestrictionPage.selectUserRole(testdata.selectUserRole);
       await expect(
         page.getByRole("heading", { name: "Role Restriction" }),
       ).toBeVisible();

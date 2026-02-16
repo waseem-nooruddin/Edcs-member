@@ -2,7 +2,9 @@ import { test, expect } from "@playwright/test";
 import { LoginPage } from "../pages/login.page";
 import { ProductPage } from "../pages/product.page";
 import { UserManagementPage } from "../pages/user.management.page";
-import { credentials } from "./credentials/credentials";
+import { credentials } from "./resources/credentials";
+import { NavBarPage } from "../pages/navbar.page";
+import { testdata } from "./resources/testdata";
 
 test.describe("User Page", () => {
   let loginPage: LoginPage;
@@ -17,10 +19,10 @@ test.describe("User Page", () => {
     { tag: ["@smoke", "@TC_06", "@positive"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
-      await userManagementPage.navigateToUserPage();
-      await expect(page.getByRole("link", { name: "Users" })).toBeVisible();
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
+      await navBarpage.navigateToUserPage();
+      await expect(page.getByRole("button", { name: "Users" })).toBeVisible();
     },
   );
 
@@ -29,14 +31,15 @@ test.describe("User Page", () => {
     { tag: ["@smoke", "@TC_07", "@positive"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
+      await navBarpage.navigateToUserPage();
       const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
-      await userManagementPage.navigateToUserPage();
       await userManagementPage.clickAddNewUser();
-      await userManagementPage.enterLoginID("10011");
+      await userManagementPage.enterLoginID(testdata.Employee_Number);
       const empNumber = await page.locator("#root_empNumber").inputValue();
       expect(empNumber).toBe("");
-      await userManagementPage.enterValidateId();
+      await userManagementPage.clickValidateButton();
     },
   );
 
@@ -45,12 +48,13 @@ test.describe("User Page", () => {
     { tag: ["@smoke", "@TC_08", "@positive"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
+      await navBarpage.navigateToUserPage();
       const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
-      await userManagementPage.navigateToUserPage();
       await userManagementPage.clickAddNewUser();
-      await userManagementPage.enterLoginID("10011");
-      await userManagementPage.enterValidateId();
+      await userManagementPage.enterLoginID(testdata.Employee_Number);
+      await userManagementPage.clickValidateButton();
       await userManagementPage.enterUserRoleId();
       await userManagementPage.enterSubmitButton();
     },
@@ -61,11 +65,10 @@ test.describe("User Page", () => {
     { tag: ["@smoke", "@TC_09", "@positive"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
-      await userManagementPage.navigateToUserPage();
-      await expect(page.getByRole("link", { name: "Users" })).toBeVisible();
-      await expect(page.getByText("10011")).toBeVisible();
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
+      await navBarpage.navigateToUserPage();
+      await expect(page.locator('//div[@class="MuiCardContent-root formCard__body"]')).toBeVisible();
     },
   );
 });

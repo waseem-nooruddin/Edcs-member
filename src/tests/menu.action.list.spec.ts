@@ -3,7 +3,9 @@ import { LoginPage } from "../pages/login.page";
 import { ProductPage } from "../pages/product.page";
 import { UserManagementPage } from "../pages/user.management.page";
 import { MenuActionListPage } from "../pages/menu.action.list.page";
-import { credentials } from "./credentials/credentials";
+import { credentials } from "./resources/credentials";
+import { NavBarPage } from "../pages/navbar.page";
+import { testdata } from "./resources/testdata";
 
 test.describe("Menu Action List Page", () => {
   let loginPage: LoginPage;
@@ -14,18 +16,18 @@ test.describe("Menu Action List Page", () => {
   });
   test(
     "Verify Menu Action List page loads correctly",
-    { tag: ["@smoke", "@TC_09", "@positive"] },
+    { tag: ["@smoke", "@TC_21", "@positive"] },
     async ({ page }) => {
       await loginPage.login(credentials.username, credentials.password);
-      const userManagementPage = new UserManagementPage(page);
-      await userManagementPage.clickUserManagement();
+      const navBarpage = new NavBarPage(page);
+      await navBarpage.clickUserManagement();
       const menuActionListPage = new MenuActionListPage(page);
-      await menuActionListPage.clickMenuActionList.call({ page });
+      await navBarpage.clickMenuActionList();
       await expect(
         page.getByRole("heading", { name: "Menu Action List" }),
       ).toBeVisible();
-      await menuActionListPage.searchMenuActionList.call({ page }, "284");
-      await expect(page.getByText("284", { exact: false })).toBeVisible();
+      await menuActionListPage.searchMenuActionList(testdata.searchMenuActionList);
+      await expect(page.getByText("300", { exact: false })).toBeVisible();
     },
   );
 });
